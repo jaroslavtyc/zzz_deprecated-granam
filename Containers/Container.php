@@ -3,5 +3,7 @@ namespace granam;
 
 interface Container {
 
-	public function addItem($item, $index = NULL);
+	public function add($item, $index = NULL);
+
+	public function set($item, $index);
 }

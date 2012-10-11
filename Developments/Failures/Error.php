@@ -34,19 +34,17 @@ class Error extends \granam\Failure {
 		$errorLine = NULL,
 		$errorContext = array()
 	) {
-		parent::__construct($errorMessage, $errorNumber, $errorFile, $errorLine);
 		$this->setContext($errorContext);
+		parent::__construct($errorMessage, $errorNumber, $errorFile, $errorLine);
 	}
 
-	public function getContext()
-	{
+	public function getContext() {
 		return $this->context;
 	}
 
 	// ---- LOCAL HELPERS ----
 
-	private function setContext($context)
-	{
+	private function setContext($context) {
 		$this->context = $context;
 	}
 }

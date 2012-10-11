@@ -17,13 +17,11 @@ abstract class Failure extends \Exception {
 
 	// ---- LOCAL HELPERS ----
 
-	protected function setFile($file)
-	{
+	protected function setFile($file) {
 		$this->file = $file;
 	}
 
-	protected function setLine($line)
-	{
+	protected function setLine($line) {
 		$this->line = $line;
 	}
 }

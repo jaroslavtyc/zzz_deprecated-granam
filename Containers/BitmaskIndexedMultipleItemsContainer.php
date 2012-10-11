@@ -13,7 +13,7 @@ class BitmaskIndexedMultipleItemsContainer // on same index can be more items, s
 		$this->initializeMergedBitmask();
 	}
 
-	public function addItemOnIndex($item, $bitmaskIndex) {
+	public function addOnIndex($item, $bitmaskIndex) {
 		$this->checkBitmask($bitmaskIndex);
 		$this->mergeBitmask($bitmaskIndex);
 		$this->ensureIndexInStorage($bitmaskIndex);

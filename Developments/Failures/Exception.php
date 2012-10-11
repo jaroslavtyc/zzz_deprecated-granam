@@ -75,8 +75,7 @@ class Exception extends \granam\Failure {
 
 	// ---- LOCAL HELPERS ----
 
-	private function isMoreSpecificExceptionNameRequired($exceptionCode)
-	{
+	private function isMoreSpecificExceptionNameRequired($exceptionCode) {
 		if (get_class($this) !== __CLASS__) { // exception is not of the base class,
 			// so has been already builded from more specific class and should be
 			// filled and thrown
@@ -92,8 +91,7 @@ class Exception extends \granam\Failure {
 		return TRUE;
 	}
 
-	private function ensureExceptionClassAccessibility($exceptionClassName)
-	{
+	private function ensureExceptionClassAccessibility($exceptionClassName) {
 		if (!Observances_Utilities::isAvailable($exceptionClassName)) {
 			// Exception class of this type does not exists yet
 			Objects_Utilities::buildClass(
@@ -111,8 +109,7 @@ class Exception extends \granam\Failure {
 		}
 	}
 
-	private function validateExceptionCode($code)
-	{
+	private function validateExceptionCode($code) {
 		if (is_null($code)) {
 			return $code;
 		} elseif (!is_numeric($code)) {
@@ -152,8 +149,7 @@ class Exception extends \granam\Failure {
 		return (int)$code;
 	}
 
-	private function setPrevious(\Exception $previous)
-	{
+	private function setPrevious(\Exception $previous) {
 		$this->previous = $previous;
 	}
 
@@ -163,8 +159,7 @@ class Exception extends \granam\Failure {
 	 * @param int $code
 	 * @return string full name of exception
 	 */
-	private static function getSpecificExceptionName($code)
-	{
+	private static function getSpecificExceptionName($code) {
 		$nameOfException = '\\' . get_called_class();
 		$groupsDelimiter = '_';
 		foreach (self::getListOfExceptionNamesByCode($code) as $exceptionGroupDetails) {
@@ -187,8 +182,7 @@ class Exception extends \granam\Failure {
 	 * @return array list of exception types, grouped by first-level exception
 	 *	 types code
 	 */
-	private static function getListOfExceptionNamesByCode($code)
-	{
+	private static function getListOfExceptionNamesByCode($code) {
 		$exceptionNames = array();
 		if ($code & self::ACCESS) {
 			$exceptionNames[self::ACCESS] = array('ACCESS');

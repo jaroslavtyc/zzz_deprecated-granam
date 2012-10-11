@@ -8,13 +8,13 @@ abstract class ContainerIndexedExternalOnly  extends \granam\Object
 		$this->initializeStorage();
 	}
 
-	public function addItem($item, $index = NULL) {
+	public function add($item, $index = NULL) {
 		$this->checkIndex($index); // externally indexed items has to get explicitly
 		// specified index
-		$this->addItemToIndex($item, $index);
+		$this->addOnIndex($item, $index);
 	}
 
-	abstract public function addItemOnIndex($item, $index);
+	abstract public function addOnIndex($item, $index);
 
 	protected function checkIndex($index) {
 		if (!is_null($index)) {
