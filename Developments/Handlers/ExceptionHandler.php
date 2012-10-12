@@ -5,23 +5,23 @@ final class ExceptionHandler extends \granam\FailureHandler {
 
 	private static $instance;
 
-	final public static function getInstance(\granam\Snitcher $snitcher = NULL) {
-		if (!isset(self::$instance)) {
-			if (is_null($snitcher)) {
-				throw new Exception(
-					'Snitcher is needed for first require of [' . get_called_class() .
-						'] instance as child of [' . __CLASS__ .'] class',
-					Exception::CONTENT_VALUE | Exception::SERVICE_LAUNCHING
-				);
-			}
+	public static function initializeInstance(\granam\Snitcher $snitcher) {
+		if (isset(self::$instance)) {
+			throw new \granam\Exception(
+				sprintf('Instance of %s is already initialized', get_called_class()),
+				\granam\Exception::SERVICE_LAUNCHING | \granam\Exception::PROCESS_STATE
+			);
+		}
 
-			$actualCalledClass = get_called_class();
-			self::$instance = new $actualCalledClass($snitcher);
-		} elseif (!is_null($snitcher) && $snitcher !== self::$instance->getSnitcher()) {
+		$actuallyCalledClass = get_called_class();
+		self::$instance = new $actuallyCalledClass($snitcher);
+	}
+
+	final public static function getInstance() {
+		if (!isset(self::$instance)) {
 			throw new Exception(
-				'Instance of [' . get_called_class() . '] is already built ' .
-					'with another snitcher',
-				Exception::CONTENT_VALUE | Exception::PROCESS_STATE
+				'Instance of [' . get_called_class() . '] is not initialized yet.',
+				\granam\Exception::PROCESS_STATE
 			);
 		}
 

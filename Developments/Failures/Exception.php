@@ -102,7 +102,7 @@ class Exception extends \granam\Failure {
 
 			if (!Observances_Utilities::isAvailable($exceptionClassName)) {
 				throw new \Exception( // desired Exception type could not been created
-					'Exception of code [' . $code . '] could not be built',
+					'Exception of name [' . $exceptionClassName . '] could not be built',
 					self::ACCESS_EXECUTION
 				);
 			}
@@ -162,21 +162,22 @@ class Exception extends \granam\Failure {
 	private static function getSpecificExceptionName($code) {
 		$nameOfException = '\\' . get_called_class();
 		$groupsDelimiter = '_';
-		foreach (self::getListOfExceptionNamesByCode($code) as $exceptionGroupDetails) {
-			$nameOfException .= $groupsDelimiter;
-			foreach ($exceptionGroupDetails as $exceptionGroupDetail) {
-				$nameOfException .= ucfirst(strtolower($exceptionGroupDetail));
-			}
+		$firstUpper = function($name) {
+			return ucfirst(strtolower($name)); // ACCESS => Access
+		};
+		foreach (self::getListOfExceptionNamesByCode($code) as $type => $subtypes) {
+			$nameOfException .= $groupsDelimiter . $firstUpper($type);
+			$nameOfException .= implode('And', array_map($firstUpper, $subtypes));
 		}
 
-		// example of result: "\granam\Exception_AccessExecution"
+		// example of result: "\granam\Exception_AccessReadingAndExecution"
 		return $nameOfException;
 	}
 
 	/**
 	 * According to exception code are determined exception types and subtypes
-	 * which are returned in two-dimensional array with first level indexed by
-	 * concrete exception codes, extracted from input code.
+	 * which are returned in two-dimensional array with type as key indexing
+	 * array with subtypes as values
 	 *
 	 * @param int $code
 	 * @return array list of exception types, grouped by first-level exception
@@ -185,28 +186,28 @@ class Exception extends \granam\Failure {
 	private static function getListOfExceptionNamesByCode($code) {
 		$exceptionNames = array();
 		if ($code & self::ACCESS) {
-			$exceptionNames[self::ACCESS] = array('ACCESS');
+			$exceptionNames['ACCESS'] = array();
 			if ($code & self::ACCESS_READING) {
-				$exceptionNames[self::ACCESS][] = 'READING';
+				$exceptionNames['ACCESS'][] = 'READING';
 			}
 
 			if ($code & self::ACCESS_WRITING) {
-				$exceptionNames[self::ACCESS][] = 'WRITING';
+				$exceptionNames['ACCESS'][] = 'WRITING';
 			}
 
 			if ($code & self::ACCESS_EXECUTION) {
-				$exceptionNames[self::ACCESS][] = 'EXECUTION';
+				$exceptionNames['ACCESS'][] = 'EXECUTION';
 			}
 		}
 
 		if ($code & self::CONTENT) {
-			$exceptionNames[self::CONTENT] = array('CONTENT');
+			$exceptionNames['CONTENT'] = array();
 			if ($code & self::CONTENT_TYPE) {
-				$exceptionNames[self::CONTENT][] = 'TYPE';
+				$exceptionNames['CONTENT'][] = 'TYPE';
 			}
 
 			if ($code & self::CONTENT_VALUE) {
-				$exceptionNames[self::CONTENT][] = 'VALUE';
+				$exceptionNames['CONTENT'][] = 'VALUE';
 			}
 		}
 

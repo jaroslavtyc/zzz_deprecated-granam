@@ -1,15 +1,13 @@
 <?php
 namespace granam;
 
-abstract class FailureHandler extends \granam\Object implements \granam\Singleton {
+abstract class FailureHandler extends \granam\Object implements \granam\FailureSingleton {
 
 	private $snitcher;
 
 	final protected function __construct(\granam\Snitcher $snitcher) {
 		$this->snitcher = $snitcher;
 	}
-
-	abstract public static function getInstance(\granam\Snitcher $snitcher = NULL);
 
 	// --- LINEAGE FACILITIES ----
 
